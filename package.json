@@ -1,0 +1,26 @@
+{
+  "name": "node-red-unofficial-sense",
+  "version": "1.0.0",
+  "description": "Unofficial Sense API implimentation for Node-Red (Home energy Monitoring)",
+  "main": "node-red-unofficial-sense.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blandman/node-red-unofficial-sense.git"
+  },
+  "keywords": [
+    "Node-Red",
+    "Sense",
+    "API",
+    "Home",
+    "Energy"
+  ],
+  "author": "Brandon Martin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blandman/node-red-unofficial-sense/issues"
+  },
+  "homepage": "https://github.com/blandman/node-red-unofficial-sense#readme"
+}
