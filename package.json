@@ -1,10 +1,15 @@
 {
-  "name": "node-red-unofficial-sense",
+  "name": "node-red-contrib-unofficial-sense",
   "version": "1.0.0",
   "description": "Unofficial Sense API implimentation for Node-Red (Home energy Monitoring)",
-  "main": "node-red-unofficial-sense.js",
+  "main": "sense.js",
   "scripts": {
     "test": "npm test"
+  },
+  "node-red": {
+    "nodes": {
+      "unofficial-sense": "sense.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -22,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/blandman/node-red-unofficial-sense/issues"
   },
-  "homepage": "https://github.com/blandman/node-red-unofficial-sense#readme"
+  "homepage": "https://github.com/blandman/node-red-unofficial-sense#readme",
+  "dependencies": {
+    "unofficial-sense": "^1.0.6"
+  }
 }

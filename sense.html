@@ -1,0 +1,85 @@
+<script type="text/javascript">
+    RED.nodes.registerType('sense-config',{
+        category: 'config',
+        defaults: {
+            name: {value: "Sense Energy Monitor", required: true}
+        },
+        credentials: {
+            email: {type:"text", validate:RED.validators.regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)},
+            password: {type:"password"}
+        },
+        label: function() {
+            return this.name;
+        }
+    });
+    RED.nodes.registerType('sense-device-on',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            config: {value: "", type:"sense-config"}
+        },
+        inputs:1,
+        outputs:2,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"sense-device-on";
+        }
+    });
+    RED.nodes.registerType('sense-update',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            config: {value: "", type:"sense-config"}
+        },
+        inputs:0,
+        outputs:1,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"sense-update";
+        },
+        oneditprepare: function() {
+            var node = this;
+
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="sense-config">
+    <div class="form-row">
+        <label for="sense-config-input-name">Name</label>
+        <input type="text" id="sense-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="sense-config-input-email"><i class="icon-tag"></i> Sense Email</label>
+        <input type="text" id="sense-config-input-email">
+    </div>
+    <div class="form-row">
+        <label for="sense-config-input-password"><i class="icon-tag"></i> Sense Password</label>
+        <input type="password" id="sense-config-input-password">
+    </div>
+</script>
+
+
+<script type="text/x-red" data-template-name="sense-device-on">
+    <div class="form-row">
+        <label for="sense-device-on-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="sense-device-on-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-device-on">
+    <p>Using sense authentication configuration, check to see if given device is on. msg.payload should be a device name.</p>
+</script>
+
+<script type="text/x-red" data-template-name="sense-update">
+    <div class="form-row">
+        <label for="sense-update-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="sense-update-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-update">
+    <p>Using sense authentication configuration, sends payload out whenever realtime data updates. msg.payload will be entire sense data.</p>
+</script>
