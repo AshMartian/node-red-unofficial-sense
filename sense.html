@@ -74,7 +74,7 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
-            interval: {value: 0, required: true, validate: RED.validators.number()},
+            interval: {value: "0", required: true, validate: RED.validators.number()},
             sense: {value: "", type:"sense-config", required:true}
         },
         inputs:0,
@@ -215,7 +215,7 @@
         <input id="node-input-sense">
     </div>
     <div class="form-row">
-        <label for="node-input-interval"><i class="icon-serial"></i> Interval</label>
+        <label for="node-input-interval"><i class="fa fa-fighter-jet"></i> Interval</label>
         <input type="text" id="node-input-interval" placeholder="Interval (delay in ms)">
     </div>
     <div class="form-row">
