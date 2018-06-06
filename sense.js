@@ -37,6 +37,7 @@ module.exports = function(RED) {
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
+                    if(!data || !data.payload || !data.payload.devices) return
                     if((new Date()).getTime() > this.lastCheck + config.interval) {
                         this.lastCheck = (new Date()).getTime()
                         node.send({
@@ -77,7 +78,7 @@ module.exports = function(RED) {
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
-                    if(!data.payload || !data.payload.devices) return
+                    if(!data || !data.payload || !data.payload.devices) return
                     let foundDevice = data.payload.devices.filter((device) => {
                         return device.name === config.device || device.id === config.device
                     })
