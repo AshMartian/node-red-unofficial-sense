@@ -1,17 +1,12 @@
 module.exports = function(RED) {
-    "use strict";
-    const sense = require('unofficial-sense')
+    var sense = require('unofficial-sense');
 
     function SenseConfig(config) {
         RED.nodes.createNode(this, config);
-        var email = this.credentials.email;
-        var password = this.credentials.password;
+        var creds = {email: this.credentials.email, password: this.credentials.password};
         var globalContext = this.context().global;
 
-        sense({
-            email: email,
-            password: password
-        }, (data) => {
+        sense(creds, (data) => {
             globalContext.set('sense-realtime', data);
             this.realtime = data;
         }).then(senseObj => {
