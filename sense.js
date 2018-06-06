@@ -7,14 +7,16 @@ module.exports = function(RED) {
         var globalContext = this.context().global;
 
         sense(creds, (data) => {
+            console.log(data);
             globalContext.set('sense-realtime', data);
             this.realtime = data;
         }).then(senseObj => {
+            this.senseObj = senseObj;
             senseObj.getDevices().then(devices => {
                 globalContext.set('sense-devices', devices.data);
                 this.senseDevices = devices.data;
             })
-            this.senseObj = senseObj;
+            
         })
     }
     function SenseUpdate(config) {
