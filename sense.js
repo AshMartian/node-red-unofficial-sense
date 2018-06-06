@@ -3,7 +3,7 @@ module.exports = function(RED) {
 
     function SenseConfig(config) {
         RED.nodes.createNode(this, config);
-        var creds = {email: this.credentials.email, password: this.credentials.password};
+        let creds = {email: this.credentials.email, password: this.credentials.password};
         var globalContext = this.context().global;
 
         sense(creds, (data) => {
