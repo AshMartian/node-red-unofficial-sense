@@ -38,7 +38,7 @@ module.exports = function(RED) {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
                     node.send({
-                        payload: data.data
+                        payload: data
                     })
                 });
             } else {
