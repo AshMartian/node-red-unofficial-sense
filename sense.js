@@ -51,24 +51,27 @@ module.exports = function(RED) {
         this.senseConfig = RED.nodes.getNode(this.config);
 
         node.on('input', (msg) => {
-            var devices = this.senseConfig.realtime.devices;
-            var msg2 = Object.assign({}, msg);
-            if(devices) {
-                let foundDevice = devices.filter((device) => {
-                    return device.name === msg.payload || device.id === msg.payload
-                })
-                if(foundDevice[0]) {
-                    msg.payload = foundDevice[0]
-                    msg2 = null;
+            if(this.senseConfig) {
+                var devices = this.senseConfig.realtime.devices;
+                console.log("Got devices", devices);
+                var msg2 = Object.assign({}, msg);
+                if(Array.isArray(devices)) {
+                    let foundDevice = devices.filter((device) => {
+                        return device.name === msg.payload || device.id === msg.payload
+                    })
+                    if(foundDevice[0]) {
+                        msg.payload = foundDevice[0]
+                        msg2 = null;
+                    } else {
+                        msg = null;
+                        msg2 = {"status": "Device off"}
+                    }
                 } else {
+                    msg2.payload = {"error": "no devices"}
                     msg = null;
-                    msg2 = {"status": "Device off"}
                 }
-            } else {
-                msg2.payload = {"error": "no devices"}
-                msg = null;
+                node.send([msg, msg2]);
             }
-            node.send([msg, msg2]);
         });
     }
     
