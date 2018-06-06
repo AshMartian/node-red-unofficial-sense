@@ -26,7 +26,7 @@ module.exports = function(RED) {
         })
     }
     function SenseUpdate(config) {
-        RED.nodes.createNode(config);
+        RED.nodes.createNode(this, config);
         var node = this;
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(this.config);
