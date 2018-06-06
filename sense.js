@@ -10,7 +10,7 @@ module.exports = function(RED) {
 
         sense(creds, (data) => {
             globalContext.set('sense-realtime', data);
-            this.realtime = data.data.payload;
+            if(data.payload) this.realtime = data.data.payload;
             if(data.type == "Authenticated") {
                 console.log(data)
             }
