@@ -35,11 +35,17 @@ module.exports = function(RED) {
 
         var startListening = () => {
             node.log(node.senseConfig.senseObj)
-            node.senseConfig.senseObj.events.on('data', (data) => {
-                node.send({
-                    payload: data.data
-                })
-            });
+            if(node.senseConfig.senseObj.events) {
+                node.senseConfig.senseObj.events.on('data', (data) => {
+                    node.send({
+                        payload: data.data
+                    })
+                });
+            } else {
+                node.senseConfig.events.on('connected', function(){
+                    startListening();
+                }) 
+            }
         }
         
         if(node.senseConfig) {
