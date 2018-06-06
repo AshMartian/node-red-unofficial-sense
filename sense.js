@@ -9,8 +9,11 @@ module.exports = function(RED) {
         this.events = new EventEmmitter();
 
         sense(creds, (data) => {
-            globalContext.set('sense-realtime', data.data);
-            this.realtime = data.data;
+            globalContext.set('sense-realtime', data);
+            this.realtime = data;
+            if(data.type == "Authenticated") {
+                console.log(data)
+            }
         }).then(senseObj => {
             this.senseObj = senseObj;
             this.events.emit('connected');
@@ -36,9 +39,13 @@ module.exports = function(RED) {
             });
         }
         if(this.senseConfig) {
-            this.senseConfig.events.on('connected', function(){
+            if(this.senseConfig.senseObj.events) {
                 startListening();
-            })
+            } else {
+                this.senseConfig.events.on('connected', function(){
+                    startListening();
+                }) 
+            }
         } else {
             setTimeout(startListening, 10000);
         }
