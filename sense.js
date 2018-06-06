@@ -14,10 +14,11 @@ module.exports = function(RED) {
         }).then(senseObj => {
             this.senseObj = senseObj;
             this.events.emit('connected');
+            /*
             senseObj.getDevices().then(devices => {
                 globalContext.set('sense-devices', devices.data);
                 this.senseDevices = devices.data;
-            })
+            })*/
             
         })
     }
@@ -27,9 +28,10 @@ module.exports = function(RED) {
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(this.config);
         var startListening = () => {
+            console.log(this.senseConfig.senseObj)
             this.senseConfig.senseObj.events.on('data', (data) => {
                 this.send({
-                    payload: data
+                    payload: data.data
                 })
             });
         }
