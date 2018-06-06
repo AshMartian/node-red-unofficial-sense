@@ -34,7 +34,7 @@ module.exports = function(RED) {
         var node = this;
 
         var startListening = () => {
-            console.log(node.senseConfig.senseObj)
+            node.log(node.senseConfig.senseObj)
             node.senseConfig.senseObj.events.on('data', (data) => {
                 node.send({
                     payload: data.data
@@ -43,7 +43,7 @@ module.exports = function(RED) {
         }
         
         if(node.senseConfig) {
-            if(node.senseConfig.senseObj.events) {
+            if(node.senseConfig.senseObj) {
                 startListening();
             } else {
                 node.senseConfig.events.on('connected', function(){
