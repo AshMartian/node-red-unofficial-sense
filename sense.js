@@ -38,7 +38,7 @@ module.exports = function(RED) {
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
-                    if(!data || !data.payload || !data.payload.devices) return
+                    if(!data || !data.payload) return
                     if((new Date()).getTime() > this.lastCheck + parseInt(this.interval)) {
                         this.lastCheck = (new Date()).getTime()
                         node.send({
@@ -73,6 +73,7 @@ module.exports = function(RED) {
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(config.sense);
         this.deviceOn = null;
+        this.watchingDevice = config.device;
 
         var node = this;
 
@@ -81,17 +82,20 @@ module.exports = function(RED) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
                     if(!data || !data.payload || !data.payload.devices) return
                     let foundDevice = data.payload.devices.filter((device) => {
-                        return device.name === config.device || device.id === config.device
+                        return device.name === this.watchingDevice || device.id === parseInt(this.watchingDevice)
                     })
-                    if(data.devices && this.deviceOn !== (foundDevice.length == 1)) {
+
+                    if(this.deviceOn !== (foundDevice.length == 1)) {
                         this.deviceOn = foundDevice.length == 1;
                         if(this.deviceOn) {
                             node.send([{
                                 payload: foundDevice[0]
                             }, null])
                         } else {
-                            node.send(null, "Off");
+                            node.send(null, {payload: {"status": "Device off"}});
                         }
+                    } else {
+                        node.send(null, {payload: {"status": "Could not find devices"}})
                     }
                 });
             } else {
@@ -194,7 +198,7 @@ module.exports = function(RED) {
                 var msg2 = Object.assign({}, msg);
                 if(Array.isArray(devices)) {
                     let foundDevice = devices.filter((device) => {
-                        return device.name === msg.payload || device.id === msg.payload || device.name === this.watchingDevice || device.id === this.watchingDevice
+                        return device.name === msg.device || device.id === parseInt(msg.device) || device.name === msg.payload || device.id === parseInt(msg.payload) || device.name === this.watchingDevice || device.id === this.watchingDevice
                     })
                     if(foundDevice[0]) {
                         msg.payload = foundDevice[0]

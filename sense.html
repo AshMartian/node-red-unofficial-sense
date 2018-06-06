@@ -24,7 +24,7 @@
         outputs:2,
         icon: "sense.png",
         label: function() {
-            return this.name||(this.device ? "is " + this.device + " on": false )||"sense device on";
+            return this.name||(this.device ? "check " + this.device: false )||"sense device status";
         }
     });
     RED.nodes.registerType('sense-now',{
@@ -93,14 +93,14 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
-            device: {value: 0, required: true},
+            device: {value: "", required: true},
             sense: {value: "", type:"sense-config", required:true}
         },
         inputs:0,
         outputs:2,
         icon: "sense.png",
         label: function() {
-            return this.name||"sense trigger";
+            return this.name||(this.device ? this.device + " triggered": false )||"sense device trigger";
         },
         oneditprepare: function() {
             var node = this;
