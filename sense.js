@@ -1,17 +1,19 @@
 module.exports = function(RED) {
     var sense = require('unofficial-sense');
+    var EventEmmitter = require('events')
 
     function SenseConfig(config) {
         RED.nodes.createNode(this, config);
         let creds = {email: this.credentials.email, password: this.credentials.password};
         var globalContext = this.context().global;
+        this.events = new EventEmmitter();
 
         sense(creds, (data) => {
-            console.log(data);
-            globalContext.set('sense-realtime', data);
-            this.realtime = data;
+            globalContext.set('sense-realtime', data.data);
+            this.realtime = data.data;
         }).then(senseObj => {
             this.senseObj = senseObj;
+            this.events.emit('connected');
             senseObj.getDevices().then(devices => {
                 globalContext.set('sense-devices', devices.data);
                 this.senseDevices = devices.data;
@@ -31,10 +33,12 @@ module.exports = function(RED) {
                 })
             });
         }
-        if(this.senseConfig && this.senseConfig.senseObj) {
-            startListening();
+        if(this.senseConfig) {
+            this.senseConfig.events.on('connected', function(){
+                startListening();
+            })
         } else {
-            setTimeout(startListening, 3000);
+            setTimeout(startListening, 10000);
         }
     }
 
