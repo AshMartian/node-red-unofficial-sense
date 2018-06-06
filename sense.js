@@ -22,17 +22,22 @@ module.exports = function(RED) {
             this.senseObj = senseObj;
         })
     }
-    function senseUpdate(config) {
+    function SenseUpdate(config) {
         RED.nodes.createNode(config);
         var node = this;
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(this.config);
-        if(this.senseConfig && this.senseConfig.senseObj) {
+        var startListening = () => {
             this.senseConfig.senseObj.events.on('data', (data) => {
                 this.send({
                     payload: data
                 })
             });
+        }
+        if(this.senseConfig && this.senseConfig.senseObj) {
+            startListening();
+        } else {
+            setTimeout(startListening, 3000);
         }
     }
 
@@ -70,6 +75,6 @@ module.exports = function(RED) {
             password: {type:"password"}
         }
     });
-    RED.nodes.registerType("sense-update", senseUpdate);
+    RED.nodes.registerType("sense-update", SenseUpdate);
     RED.nodes.registerType("sense-device-on", SenseDeviceOn);
 }
