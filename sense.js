@@ -30,16 +30,19 @@ module.exports = function(RED) {
         
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(config.sense);
+        this.lastCheck = new Date().getTime()
 
         var node = this;
 
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
-                    //node.log(JSON.stringify(data))
-                    node.send({
-                        payload: data.payload
-                    })
+                    if(new Date().getTime() > this.lastCheck + config.interval) {
+                        this.lastCheck = new Date().getTime()
+                        node.send({
+                            payload: data.payload
+                        })
+                    }
                 });
             } else {
                 node.senseConfig.events.on('connected', function(){
@@ -62,6 +65,119 @@ module.exports = function(RED) {
         }
     }
 
+    function SenseDeviceTrigger(config) {
+        RED.nodes.createNode(this, config);
+        
+        var globalContext = this.context().global;
+        this.senseConfig = RED.nodes.getNode(config.sense);
+        this.deviceOn = null;
+
+        var node = this;
+
+        var startListening = () => {
+            if(node.senseConfig.senseObj.events) {
+                node.senseConfig.senseObj.events.on('data', (data) => {
+                    let foundDevice = devices.filter((device) => {
+                        return device.name === config.device || device.id === config.device
+                    })
+                    if(data.devices && this.deviceOn !== (foundDevice.length == 1)) {
+                        this.deviceOn = foundDevice.length == 1;
+                        if(this.deviceOn) {
+                            node.send([{
+                                payload: foundDevice[0]
+                            }, null])
+                        } else {
+                            node.send(null, "Off");
+                        }
+                    }
+                });
+            } else {
+                node.senseConfig.events.on('connected', function(){
+                    startListening();
+                }) 
+            }
+        }
+        
+        if(node.senseConfig) {
+            if(node.senseConfig.senseObj) {
+                startListening();
+            } else {
+                node.senseConfig.events.on('connected', function(){
+                    startListening();
+                }) 
+            }
+        } else {
+            console.log("Could not get config");
+            //setTimeout(startListening, 10000);
+        }
+    }
+
+    function SenseNow(config) {
+        RED.nodes.createNode(this, config);
+        
+        var globalContext = this.context().global;
+        this.senseConfig = RED.nodes.getNode(config.sense);
+
+        var node = this;
+
+        node.on('input', (msg) => {
+            if(this.senseConfig && this.senseConfig.realtime) {
+                msg.payload = this.senseConfig.realtime;
+                node.send(msg)
+            }
+        })
+    }
+
+    function SenseMonitor(config) {
+        RED.nodes.createNode(this, config);
+        
+        var globalContext = this.context().global;
+        this.senseConfig = RED.nodes.getNode(config.sense);
+
+        var node = this;
+
+        var getMonitorInfo = async (msg) => {
+            let monitorData = await node.senseConfig.senseObj.getMonitorInfo();
+            msg.payload = monitorData;
+            node.send(msg);
+        }
+
+        node.on('input', (msg) => {
+            if(this.senseConfig && this.senseConfig.senseObj) {
+                getMonitorInfo(msg);
+            } else {
+                node.senseConfig.events.on('connected', function(){
+                    getMonitorInfo(msg);
+                });
+            }
+        })
+    }
+
+    function SenseDevices(config) {
+        RED.nodes.createNode(this, config);
+        
+        var globalContext = this.context().global;
+        this.senseConfig = RED.nodes.getNode(config.sense);
+
+        var node = this;
+
+        var getDevices = async (msg) => {
+            let deviceData = await node.senseConfig.senseObj.getDevices();
+            msg.payload = deviceData;
+            node.send(msg);
+        }
+
+        node.on('input', (msg) => {
+            if(this.senseConfig && this.senseConfig.senseObj) {
+                getDevices(msg);
+            } else {
+                node.senseConfig.events.on('connected', function(){
+                    getDevices(msg);
+                });
+            }
+        })
+    }
+
     function SenseDeviceOn(config) {
         RED.nodes.createNode(this, config);
         var node = this;
@@ -71,11 +187,10 @@ module.exports = function(RED) {
         node.on('input', (msg) => {
             if(this.senseConfig) {
                 var devices = this.senseConfig.realtime.devices;
-                console.log("Got devices", devices);
                 var msg2 = Object.assign({}, msg);
                 if(Array.isArray(devices)) {
                     let foundDevice = devices.filter((device) => {
-                        return device.name === msg.payload || device.id === msg.payload
+                        return device.name === msg.payload || device.id === msg.payload || device.name === config.device || device.id === config.device
                     })
                     if(foundDevice[0]) {
                         msg.payload = foundDevice[0]
@@ -100,5 +215,9 @@ module.exports = function(RED) {
         }
     });
     RED.nodes.registerType("sense-update", SenseUpdate);
+    RED.nodes.registerType("sense-now", SenseNow);
+    RED.nodes.registerType("sense-devices", SenseDevices);
+    RED.nodes.registerType("sense-monitor", SenseMonitor);
+    RED.nodes.registerType("sense-trigger", SenseDeviceTrigger);
     RED.nodes.registerType("sense-device-on", SenseDeviceOn);
 }

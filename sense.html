@@ -17,13 +17,56 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
+            device: {value:""},
             sense: {value: "", type:"sense-config", required:true}
         },
         inputs:1,
         outputs:2,
         icon: "sense.png",
         label: function() {
-            return this.name||"sense device on";
+            return this.name||(this.device ? "is" + this.device + " on": false )||"sense device on";
+        }
+    });
+    RED.nodes.registerType('sense-now',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            sense: {value: "", type:"sense-config", required:true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"sense now";
+        }
+    });
+    RED.nodes.registerType('sense-monitor',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            sense: {value: "", type:"sense-config", required:true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"sense monitor";
+        }
+    });
+    RED.nodes.registerType('sense-devices',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            sense: {value: "", type:"sense-config", required:true}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"all sense devices";
         }
     });
     RED.nodes.registerType('sense-update',{
@@ -31,6 +74,7 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
+            interval: {value: 0, required: true, validate: RED.validators.number()},
             sense: {value: "", type:"sense-config", required:true}
         },
         inputs:0,
@@ -38,6 +82,25 @@
         icon: "sense.png",
         label: function() {
             return this.name||"sense update";
+        },
+        oneditprepare: function() {
+            var node = this;
+
+        }
+    });
+    RED.nodes.registerType('sense-update',{
+        category: 'sense',
+        color: '#F9461C',
+        defaults: {
+            name: {value:""},
+            device: {value: 0, required: true},
+            sense: {value: "", type:"sense-config", required:true}
+        },
+        inputs:0,
+        outputs:2,
+        icon: "sense.png",
+        label: function() {
+            return this.name||"sense trigger";
         },
         oneditprepare: function() {
             var node = this;
@@ -68,6 +131,10 @@
         <input id="node-input-sense">
     </div>
     <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i> Device</label>
+        <input type="text" id="node-input-device" placeholder="Device Name or ID (optional)">
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
@@ -77,10 +144,79 @@
     <p>Using sense authentication configuration, check to see if given device is on. msg.payload should be a device name.</p>
 </script>
 
+<script type="text/x-red" data-template-name="sense-monitor">
+    <div class="form-row">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-monitor">
+    <p>Using sense authentication configuration, get information about the connected monitor.</p>
+</script>
+
+<script type="text/x-red" data-template-name="sense-now">
+    <div class="form-row">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-now">
+    <p>Using sense authentication configuration, get current live data one time.</p>
+</script>
+
+
+<script type="text/x-red" data-template-name="sense-trigger">
+    <div class="form-row">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i> Device</label>
+        <input type="text" id="node-input-device" placeholder="Device Name or ID">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-trigger">
+    <p>Using sense authentication configuration, call when device name/id is on or off.</p>
+</script>
+
+<script type="text/x-red" data-template-name="sense-devices">
+    <div class="form-row">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="sense-devices">
+    <p>Using sense authentication configuration, get all known devices.</p>
+</script>
+
 <script type="text/x-red" data-template-name="sense-update">
     <div class="form-row">
         <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
         <input id="node-input-sense">
+    </div>
+    <div class="form-row">
+        <label for="node-input-interval"><i class="icon-serial"></i> Interval</label>
+        <input type="text" id="node-input-interval" placeholder="Interval (delay)">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
