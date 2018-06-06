@@ -31,6 +31,7 @@ module.exports = function(RED) {
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(config.sense);
         this.lastCheck = (new Date()).getTime()
+        this.interval = config.interval;
 
         var node = this;
 
@@ -38,7 +39,7 @@ module.exports = function(RED) {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
                     if(!data || !data.payload || !data.payload.devices) return
-                    if((new Date()).getTime() > this.lastCheck + parseInt(config.interval)) {
+                    if((new Date()).getTime() > this.lastCheck + parseInt(this.interval)) {
                         this.lastCheck = (new Date()).getTime()
                         node.send({
                             payload: data.payload
@@ -185,6 +186,7 @@ module.exports = function(RED) {
         var node = this;
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(config.sense);
+        this.watchingDevice = config.device;
 
         node.on('input', (msg) => {
             if(this.senseConfig && this.senseConfig.realtime && this.senseConfig.realtime.payload && this.senseConfig.realtime.payload.devices) {
@@ -192,14 +194,14 @@ module.exports = function(RED) {
                 var msg2 = Object.assign({}, msg);
                 if(Array.isArray(devices)) {
                     let foundDevice = devices.filter((device) => {
-                        return device.name === msg.payload || device.id === msg.payload || device.name === config.device || device.id === config.device
+                        return device.name === msg.payload || device.id === msg.payload || device.name === this.watchingDevice || device.id === this.watchingDevice
                     })
                     if(foundDevice[0]) {
                         msg.payload = foundDevice[0]
                         msg2 = null;
                     } else {
                         msg = null;
-                        msg2 = {"status": "Device off"}
+                        msg2.payload = {"status": "Device off"}
                     }
                 } else {
                     msg2.payload = {"error": "no devices"}
