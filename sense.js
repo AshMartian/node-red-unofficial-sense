@@ -10,7 +10,7 @@ module.exports = function(RED) {
 
         sense(creds, (data) => {
             globalContext.set('sense-realtime', data);
-            this.realtime = data;
+            this.realtime = data.data.payload;
             if(data.type == "Authenticated") {
                 console.log(data)
             }
@@ -30,15 +30,15 @@ module.exports = function(RED) {
         
         var globalContext = this.context().global;
         this.senseConfig = RED.nodes.getNode(config.sense);
-        this.lastCheck = new Date().getTime()
+        this.lastCheck = (new Date()).getTime()
 
         var node = this;
 
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
-                    if(new Date().getTime() > this.lastCheck + config.interval) {
-                        this.lastCheck = new Date().getTime()
+                    if((new Date()).getTime() > this.lastCheck + config.interval) {
+                        this.lastCheck = (new Date()).getTime()
                         node.send({
                             payload: data.payload
                         })
@@ -77,7 +77,7 @@ module.exports = function(RED) {
         var startListening = () => {
             if(node.senseConfig.senseObj.events) {
                 node.senseConfig.senseObj.events.on('data', (data) => {
-                    let foundDevice = devices.filter((device) => {
+                    let foundDevice = data.payload.devices.filter((device) => {
                         return device.name === config.device || device.id === config.device
                     })
                     if(data.devices && this.deviceOn !== (foundDevice.length == 1)) {

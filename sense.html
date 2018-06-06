@@ -24,7 +24,7 @@
         outputs:2,
         icon: "sense.png",
         label: function() {
-            return this.name||(this.device ? "is" + this.device + " on": false )||"sense device on";
+            return this.name||(this.device ? "is " + this.device + " on": false )||"sense device on";
         }
     });
     RED.nodes.registerType('sense-now',{
@@ -216,7 +216,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-interval"><i class="icon-serial"></i> Interval</label>
-        <input type="text" id="node-input-interval" placeholder="Interval (delay)">
+        <input type="text" id="node-input-interval" placeholder="Interval (delay in ms)">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
