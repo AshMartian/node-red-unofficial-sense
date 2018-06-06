@@ -17,7 +17,7 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
-            config: {value: "", type:"sense-config", required:true}
+            sense: {value: "", type:"sense-config", required:true}
         },
         inputs:1,
         outputs:2,
@@ -31,7 +31,7 @@
         color: '#F9461C',
         defaults: {
             name: {value:""},
-            config: {value: "", type:"sense-config", required:true}
+            sense: {value: "", type:"sense-config", required:true}
         },
         inputs:0,
         outputs:1,
@@ -64,8 +64,8 @@
 
 <script type="text/x-red" data-template-name="sense-device-on">
     <div class="form-row">
-        <label for="node-input-config"><i class="fa fa-globe"></i> Config</label>
-        <input id="node-input-config">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -79,8 +79,8 @@
 
 <script type="text/x-red" data-template-name="sense-update">
     <div class="form-row">
-        <label for="node-input-config"><i class="fa fa-globe"></i> Config</label>
-        <input id="node-input-config">
+        <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
+        <input id="node-input-sense">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>

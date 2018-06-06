@@ -29,7 +29,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         
         var globalContext = this.context().global;
-        this.senseConfig = RED.nodes.getNode(config.config);
+        this.senseConfig = RED.nodes.getNode(config.sense);
 
         var node = this;
 
@@ -60,7 +60,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         var globalContext = this.context().global;
-        this.senseConfig = RED.nodes.getNode(this.config);
+        this.senseConfig = RED.nodes.getNode(config.sense);
 
         node.on('input', (msg) => {
             if(this.senseConfig) {
