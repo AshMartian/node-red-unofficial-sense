@@ -27,27 +27,32 @@ module.exports = function(RED) {
     }
     function SenseUpdate(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
+        
         var globalContext = this.context().global;
-        this.senseConfig = RED.nodes.getNode(this.config);
+        this.senseConfig = RED.nodes.getNode(config.config);
+
+        var node = this;
+
         var startListening = () => {
-            console.log(this.senseConfig.senseObj)
-            this.senseConfig.senseObj.events.on('data', (data) => {
-                this.send({
+            console.log(node.senseConfig.senseObj)
+            node.senseConfig.senseObj.events.on('data', (data) => {
+                node.send({
                     payload: data.data
                 })
             });
         }
-        if(this.senseConfig) {
-            if(this.senseConfig.senseObj.events) {
+        
+        if(node.senseConfig) {
+            if(node.senseConfig.senseObj.events) {
                 startListening();
             } else {
-                this.senseConfig.events.on('connected', function(){
+                node.senseConfig.events.on('connected', function(){
                     startListening();
                 }) 
             }
         } else {
-            setTimeout(startListening, 10000);
+            console.log("Could not get config");
+            //setTimeout(startListening, 10000);
         }
     }
 
