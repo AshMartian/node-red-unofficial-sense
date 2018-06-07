@@ -158,6 +158,7 @@
         <input type="text" id="node-config-input-name">
     </div>
     <div class="form-row">
+        <p>This is the email/password used to log into the sense app or website</p>
         <label for="node-config-input-email"><i class="icon-tag"></i> Sense Email</label>
         <input type="text" id="node-config-input-email">
     </div>
@@ -175,8 +176,8 @@
     </div>
     <div class="form-row">
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
-        <select type="text" id="node-config-input-device" style="width:90%;">
-            <option>Loading...</option>
+        <select type="text" id="node-config-input-device">
+            <option>Loading Devices...</option>
         </select>
     </div>
     <div class="form-row">
@@ -186,7 +187,59 @@
 </script>
 
 <script type="text/x-red" data-help-name="sense-device-on">
-    <p>Using sense authentication configuration, check to see if given device is on. msg.payload should be a device name.</p>
+    <p>Using sense authentication configuration, check to see if given device is on.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">String | Buffer</span>
+        </dt>
+        <dt>device
+                <span class="property-type">String | Buffer</span>
+            </dt>
+        <dd>(Optional) if a device is not selected in the configuration dropdown, use <code>msg.payload</code> or <code>msg.device</code> as the device search parameter.</dd>
+    </dl>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Device On
+            <dl class="message-properties">
+                <dt>payload
+                    <span class="property-type">Object</span>
+                </dt>
+                <dd>The payload will return an object containing the desired device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.w
+                    <span class="property-type">Number</span>
+                </dt>
+                <dd>Wh usage of the device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.c
+                    <span class="property-type">Number</span>
+                </dt>
+                <dd>Current (Ah) being used by the device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.name
+                    <span class="property-type">String</span>
+                </dt>
+                <dd>The device's user given or automatically generated name. This is the identifier used by the Sense Device Trigger and Sense Device On Nodes</dd>
+            </dl>
+        </li>
+        <li>Device Off
+            <dl class="message-properties">
+                <dt>payload.status
+                    <span class="property-type">String</span>
+                </dt>
+                <dd>The <code>payload.status</code> will return an error relating to if the device simply wasn't found, or if the Sense data was incorrect.</dd>
+            </dl>
+        </li>
+    </ol>
 </script>
 
 <script type="text/x-red" data-template-name="sense-monitor">
@@ -202,6 +255,58 @@
 
 <script type="text/x-red" data-help-name="sense-monitor">
     <p>Using sense authentication configuration, get information about the connected monitor.</p>
+
+    <h3>Input</h3>
+    <p>This node ignores inputs, used as a trigger.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>The payload will return Sense monitor data from the Sense API. This is specific to your Physical Sense Monitor.</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload.monitor_info
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>This object contains information regarding the sense device</dd>
+        <dt>payload.monitor_info.online
+            <span class="property-type">Boolean</span>
+        </dt>
+        <dd>Is the sense device on?</dd>
+        <dt>payload.monitor_info.ssid
+            <span class="property-type">String</span>
+        </dt>
+        <dd>The Wifi Network the Sense device is connected to</dd>
+        <dt>payload.monitor_info.signal
+            <span class="property-type">String</span>
+        </dt>
+        <dd>Sense Monitor Wifi signal strength</dd>
+    </dl>
+    <dl class="message-properties">
+        <dt>payload.device_detection
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>Contains information regarding Sense's progress in detecting new devices</dd>
+
+        <dt>payload.device_detection.num_detected
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Number of devices detected</dd>
+
+        <dt>payload.device_detection.in_progress
+            <span class="property-type">Array <Object></span>
+        </dt>
+        <dd>List of devices that Sense is learning and their possible identifiers</dd>
+
+        
+        <dt>payload.device_detection.found
+            <span class="property-type">Array <Object></span>
+        </dt>
+        <dd>List of devices that Sense is very close to knowing</dd>
+        
+    </dl>
 </script>
 
 <script type="text/x-red" data-template-name="sense-now">
@@ -216,7 +321,53 @@
 </script>
 
 <script type="text/x-red" data-help-name="sense-now">
-    <p>Using sense authentication configuration, get current live data one time.</p>
+    <p>Using sense authentication configuration, get current live data.</p>
+
+    <h3>Input</h3>
+    <p>This node ignores inputs, used as a trigger.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>The payload will return the latest Sense data from the Sense API. This may be different based on if any events just happened (I.E. Changing device name, merging devices, discovering new devices).</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.w
+                <span class="property-type">Number</span>
+        </dt>
+        <dd>Current total Wh usage.</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.hz
+                <span class="property-type">Number</span>
+        </dt>
+        <dd>Current AC frequency in hertz.</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.channels
+                <span class="property-type">Array <Number></span>
+        </dt>
+        <dd>Wh usage in each channel / 120v AC Source</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.voltage
+                <span class="property-type">Array <Number></span>
+        </dt>
+        <dd>Voltage of each channel / 120v AC Source</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.devices
+                <span class="property-type">Array <Devices></span>
+        </dt>
+        <dd>An array of devices currently using energy. Usually contains at least two for Always On and Other</dd>
+    </dl>
 </script>
 
 
@@ -228,8 +379,8 @@
     <div class="form-row">
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
         <!--input type="text" id="node-input-device" placeholder="Device Name or ID"-->
-        <select type="text" id="node-config-input-device" style="width:90%;">
-            <option>Loading...</option>
+        <select type="text" id="node-config-input-device" >
+            <option>Loading Devices...</option>
         </select>
     </div>
     <div class="form-row">
@@ -240,6 +391,47 @@
 
 <script type="text/x-red" data-help-name="sense-trigger">
     <p>Using sense authentication configuration, call when device name/id is on or off.</p>
+
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Device On
+            <dl class="message-properties">
+                <dt>payload
+                    <span class="property-type">Object</span>
+                </dt>
+                <dd>The payload will return an object containing the desired device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.w
+                    <span class="property-type">Number</span>
+                </dt>
+                <dd>Wh usage of the device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.c
+                    <span class="property-type">Number</span>
+                </dt>
+                <dd>Current (Ah) being used by the device</dd>
+            </dl>
+
+            <dl class="message-properties">
+                <dt>payload.name
+                    <span class="property-type">String</span>
+                </dt>
+                <dd>The device's user given or automatically generated name. This is the identifier used by the Sense Device Trigger and Sense Device On Nodes</dd>
+            </dl>
+        </li>
+        <li>Device Off
+            <dl class="message-properties">
+                <dt>payload.status
+                    <span class="property-type">String</span>
+                </dt>
+                <dd>The <code>payload.status</code> will return an error relating to if the device simply wasn't found, or if the Sense data was incorrect.</dd>
+            </dl>
+        </li>
+    </ol>
 </script>
 
 <script type="text/x-red" data-template-name="sense-devices">
@@ -255,6 +447,38 @@
 
 <script type="text/x-red" data-help-name="sense-devices">
     <p>Using sense authentication configuration, get all known devices.</p>
+
+    <h3>Input</h3>
+    <p>This node ignores inputs, used as a trigger.</p>
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">Array</span>
+        </dt>
+        <dd>The payload will return an array of all descovered devices</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload[0].name
+            <span class="property-type">String</span>
+        </dt>
+        <dd>The device's user given or automatically generated name. This is the identifier used by the Sense Device Trigger and Sense Device On Nodes</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload[0].id
+            <span class="property-type">String</span>
+        </dt>
+        <dd>The device's id. This is the identifier can be used by the Sense Device Trigger and Sense Device On Nodes</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload[0].tags
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>A collection of String properties used by the Sense App.</dd>
+    </dl>
 </script>
 
 <script type="text/x-red" data-template-name="sense-update">
