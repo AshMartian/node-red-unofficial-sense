@@ -239,3 +239,19 @@ This node returns an array of all devices known by your sense. Input is ignored,
     } ...
 ]
 ```
+
+## Disclaimer
+
+This module was developed without the consent of the Sense company, and makes use of an undocumented and unsupported API. Use at your own risk, and be aware that Sense may change the API at any time and break this repository perminantly.
+
+## Tips for node-red creators
+
+If you're here wondering how to change the color of label text (Inside the html js for node regisration)
+
+```
+label: function() {
+    $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+    return "node label";
+}
+```
+
