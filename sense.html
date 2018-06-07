@@ -33,6 +33,11 @@
             var node = this;
             $.getJSON('sense-devices',function(data) {
                 $('#node-config-input-device').html("")
+                $('#node-config-input-device').append($('<option>', { 
+                    value: "Select a Device",
+                    text : "Select a Device (Use Input)",
+                    selected: true
+                }));
                 $.each(data, function (i, device) {
                     $('#node-config-input-device').append($('<option>', { 
                         value: device.name,
@@ -43,6 +48,8 @@
             });
         },
         oneditsave: function() {
+            var inputVal = $("#node-config-input-device").val();
+            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device")
             this.device = $("#node-config-input-device").val();
         }
     });
@@ -134,9 +141,13 @@
         },
         oneditprepare: function() {
             var node = this;
-            console.log(this)
             $.getJSON('sense-devices',function(data) {
                 $('#node-config-input-device').html("")
+                $('#node-config-input-device').append($('<option>', { 
+                    value: "Select a Device",
+                    text : "Select a Device (required)",
+                    selected: true
+                }));
                 $.each(data, function (i, device) {
                     $('#node-config-input-device').append($('<option>', { 
                         value: device.name,
@@ -147,6 +158,8 @@
             });
         },
         oneditsave: function() {
+            var inputVal = $("#node-config-input-device").val();
+            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device")
             this.device = $("#node-config-input-device").val();
         }
     });
