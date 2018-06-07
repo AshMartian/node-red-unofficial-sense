@@ -37,6 +37,9 @@
                     }));
                 });
             });
+        },
+        oneditsave: function() {
+            this.device = $("#node-config-input-device").val();
         }
     });
     RED.nodes.registerType('sense-now',{
@@ -125,6 +128,9 @@
                     }));
                 });
             });
+        },
+        oneditsave: function() {
+            this.device = $("#node-config-input-device").val();
         }
     });
 </script>
@@ -153,7 +159,7 @@
     <div class="form-row">
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
         <select type="text" id="node-config-input-device" style="width:90%;">
-
+            <option>Loading...</option>
         </select>
     </div>
     <div class="form-row">
@@ -206,7 +212,7 @@
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
         <!--input type="text" id="node-input-device" placeholder="Device Name or ID"-->
         <select type="text" id="node-config-input-device" style="width:90%;">
-
+            <option>Loading...</option>
         </select>
     </div>
     <div class="form-row">
