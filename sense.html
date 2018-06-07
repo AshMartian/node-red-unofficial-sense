@@ -25,6 +25,18 @@
         icon: "sense.png",
         label: function() {
             return this.name||(this.device ? "check " + this.device: false )||"sense device status";
+        },
+        oneditprepare: function() {
+            var node = this;
+            $.getJSON('sense-devices',function(data) {
+                $.each(data, function (i, device) {
+                    $('#node-config-input-device').append($('<option>', { 
+                        value: device.name,
+                        text : device.name,
+                        selected: device.name == node.device
+                    }));
+                });
+            });
         }
     });
     RED.nodes.registerType('sense-now',{
@@ -104,7 +116,15 @@
         },
         oneditprepare: function() {
             var node = this;
-
+            $.getJSON('sense-devices',function(data) {
+                $.each(data, function (i, device) {
+                    $('#node-config-input-device').append($('<option>', { 
+                        value: device.name,
+                        text : device.name,
+                        selected: device.name == node.device
+                    }));
+                });
+            });
         }
     });
 </script>
@@ -132,7 +152,9 @@
     </div>
     <div class="form-row">
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
-        <input type="text" id="node-input-device" placeholder="Device Name or ID (optional)">
+        <select type="text" id="node-config-input-device" style="width:90%;">
+
+        </select>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -182,7 +204,10 @@
     </div>
     <div class="form-row">
         <label for="node-input-device"><i class="icon-tag"></i> Device</label>
-        <input type="text" id="node-input-device" placeholder="Device Name or ID">
+        <!--input type="text" id="node-input-device" placeholder="Device Name or ID"-->
+        <select type="text" id="node-config-input-device" style="width:90%;">
+
+        </select>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -216,7 +241,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-interval"><i class="fa fa-fighter-jet"></i> Interval</label>
-        <input type="text" id="node-input-interval" placeholder="Interval (delay in ms)">
+        <input type="number" id="node-input-interval" placeholder="Interval (delay in ms)">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>

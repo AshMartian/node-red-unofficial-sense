@@ -17,12 +17,21 @@ module.exports = function(RED) {
         }).then(senseObj => {
             this.senseObj = senseObj;
             this.events.emit('connected');
-            /*
-            senseObj.getDevices().then(devices => {
-                globalContext.set('sense-devices', devices.data);
-                this.senseDevices = devices.data;
-            })*/
             
+            var getDevices = () => {
+                senseObj.getDevices().then(devices => {
+                    globalContext.set('sense-devices', devices.data);
+                    this.senseDevices = devices.data;
+                })
+            }
+            getDevices()
+            setInterval(getDevices, 1800000)
+
+            RED.httpAdmin.get("/sense-devices", function(req,res) {
+                senseObj.getDevices().then(devices => {
+                    res.json(devices);
+                });
+            });
         })
     }
     function SenseUpdate(config) {
