@@ -1,6 +1,10 @@
 # node-red-contrib-unofficial-sense
 
-This Node-Red module connects to the Sense API used by mobile app and website to retrive data and expose 6 nodes to be used in your node-red flows.
+ This Node-Red module connects to the Sense API used by mobile app and website to retrive data and expose 6 nodes to be used in your node-red flows.
+
+<br/>
+
+---
 
 ## Installation
 
@@ -15,12 +19,15 @@ This module was developed without the consent of the Sense company, and makes us
 ## Usage
 
 There are 6 nodes included in this module. 
+
+![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-nodes.png?raw=true "text")
+
 - Sense Update
 - Sense Now
 - Sense Device Trigger
 - Sense Device On
 - Sense Monitor
-- Sense Devices
+- Sense Devices 
 
 Every node needs to have a Sense config assigned. This hidden node stores user credentials securely and can be re-used for any number of Sense nodes. Only 1 API connection (websocket) will be maintained per Sense config.
 
@@ -96,13 +103,15 @@ The Sense update node will be triggered whenever there is new data from the Sens
 
 Payload returned is the same data as the Sense Update Node, but relies on an input to be triggered. Input is ignored.
 
+![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-now.png?raw=true)
+
 ### **Sense Device Trigger**
 
 The Sense Device Trigger node will be ran when the selected device turns on or off. Two outputs available, top (on) and bottom (off). 
 
 Node Properties include a dropdown containing all descovered devices
 
-![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-config-3.png?raw=true)
+![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-config4.png?raw=true)
 
 
 #### Example Flows
