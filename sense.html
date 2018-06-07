@@ -26,6 +26,7 @@
         outputLabels: ["Device On", "Device Off"],
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||(this.device ? "check " + this.device: false )||"sense device status";
         },
         oneditprepare: function() {
@@ -58,6 +59,7 @@
         outputLabels: ["latest sense data"],
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||"sense now";
         }
     });
@@ -74,6 +76,7 @@
         outputLabels: ["Monitor data"],
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||"sense monitor";
         }
     });
@@ -88,6 +91,7 @@
         outputs:1,
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||"all sense devices";
         }
     });
@@ -104,6 +108,7 @@
         outputLabels: ["Latest sense data"],
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||"sense update";
         },
         oneditprepare: function() {
@@ -124,6 +129,7 @@
         outputLabels: ["Device On", "Device Off"],
         icon: "sense.png",
         label: function() {
+            $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
             return this.name||(this.device ? this.device + " triggered": false )||"sense device trigger";
         },
         oneditprepare: function() {
