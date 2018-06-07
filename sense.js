@@ -235,6 +235,6 @@ module.exports = function(RED) {
     RED.nodes.registerType("sense-now", SenseNow);
     RED.nodes.registerType("sense-devices", SenseDevices);
     RED.nodes.registerType("sense-monitor", SenseMonitor);
-    RED.nodes.registerType("sense-trigger", SenseDeviceTrigger);
+    RED.nodes.registerType("sense-device-trigger", SenseDeviceTrigger);
     RED.nodes.registerType("sense-device-on", SenseDeviceOn);
 }

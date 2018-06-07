@@ -116,7 +116,7 @@
 
         }
     });
-    RED.nodes.registerType('sense-trigger',{
+    RED.nodes.registerType('sense-device-trigger',{
         category: 'sense',
         color: '#F9461C',
         defaults: {
@@ -296,13 +296,13 @@
         <dd>Number of devices detected</dd>
 
         <dt>payload.device_detection.in_progress
-            <span class="property-type">Array <Object></span>
+            <span class="property-type">Array (Object)</span>
         </dt>
         <dd>List of devices that Sense is learning and their possible identifiers</dd>
 
         
         <dt>payload.device_detection.found
-            <span class="property-type">Array <Object></span>
+            <span class="property-type">Array (Object)</span>
         </dt>
         <dd>List of devices that Sense is very close to knowing</dd>
         
@@ -350,28 +350,49 @@
 
     <dl class="message-properties">
         <dt>payload.channels
-                <span class="property-type">Array <Number></span>
+                <span class="property-type">Array (Number)</span>
         </dt>
         <dd>Wh usage in each channel / 120v AC Source</dd>
     </dl>
 
     <dl class="message-properties">
         <dt>payload.voltage
-                <span class="property-type">Array <Number></span>
+                <span class="property-type">Array (Number)</span>
         </dt>
         <dd>Voltage of each channel / 120v AC Source</dd>
     </dl>
 
     <dl class="message-properties">
         <dt>payload.devices
-                <span class="property-type">Array <Devices></span>
+                <span class="property-type">Array (Devices)</span>
         </dt>
-        <dd>An array of devices currently using energy. Usually contains at least two for Always On and Other</dd>
+        <dd>An array of devices currently using energy. Usually contains at least two for Always On and Other. See device below for documentation</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.w
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Wh usage of the device</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.c
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Current (Ah) being used by the device</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.name
+            <span class="property-type">String</span>
+        </dt>
+        <dd>The device's user given or automatically generated name. This is the identifier used by the Sense Device Trigger and Sense Device On Nodes</dd>
     </dl>
 </script>
 
 
-<script type="text/x-red" data-template-name="sense-trigger">
+<script type="text/x-red" data-template-name="sense-device-trigger">
     <div class="form-row">
         <label for="node-input-sense"><i class="fa fa-globe"></i> Config</label>
         <input id="node-input-sense">
@@ -389,7 +410,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="sense-trigger">
+<script type="text/x-red" data-help-name="sense-device-trigger">
     <p>Using sense authentication configuration, call when device name/id is on or off.</p>
 
     <h3>Outputs</h3>
@@ -497,5 +518,71 @@
 </script>
 
 <script type="text/x-red" data-help-name="sense-update">
-    <p>Using sense authentication configuration, sends payload out whenever realtime data updates. msg.payload will be entire sense data.</p>
+    <p>Using sense authentication configuration, sends payload out whenever realtime data updates.</p>
+
+
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">Object</span>
+        </dt>
+        <dd>The payload will return the latest Sense data from the Sense API. This may be different based on if any events just happened (I.E. Changing device name, merging devices, discovering new devices). Most likley will contain the following properties.</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.w
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Current total Wh usage.</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.hz
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Current AC frequency in hertz.</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.channels
+            <span class="property-type">Array (Number)</span>
+        </dt>
+        <dd>Wh usage in each channel / 120v AC Source</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>payload.voltage
+                <span class="property-type">Array (Number)</span>
+        </dt>
+        <dd>Voltage of each channel / 120v AC Source</dd>
+    </dl>
+
+    
+    <dl class="message-properties">
+        <dt>payload.devices
+                <span class="property-type">Array (Devices)</span>
+        </dt>
+        <dd>An array of devices currently using energy. Usually contains at least two for Always On and Other. See device below for documentation</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.w
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Wh usage of the device</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.c
+            <span class="property-type">Number</span>
+        </dt>
+        <dd>Current (Ah) being used by the device</dd>
+    </dl>
+
+    <dl class="message-properties">
+        <dt>device.name
+            <span class="property-type">String</span>
+        </dt>
+        <dd>The device's user given or automatically generated name. This is the identifier used by the Sense Device Trigger and Sense Device On Nodes</dd>
+    </dl>
 </script>
