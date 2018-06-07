@@ -20,8 +20,6 @@ This module was developed without the consent of the Sense company, and makes us
 
 There are 6 nodes included in this module. 
 
-![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-nodes.png?raw=true "text")
-
 - Sense Update
 - Sense Now
 - Sense Device Trigger
