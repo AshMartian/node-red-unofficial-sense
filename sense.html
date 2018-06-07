@@ -22,6 +22,8 @@
         },
         inputs:1,
         outputs:2,
+        inputLabels: "payload as device name",
+        outputLabels: ["Device On", "Device Off"],
         icon: "sense.png",
         label: function() {
             return this.name||(this.device ? "check " + this.device: false )||"sense device status";
@@ -51,6 +53,8 @@
         },
         inputs:1,
         outputs:1,
+        inputLabels: "msg is overwritten",
+        outputLabels: ["latest sense data"],
         icon: "sense.png",
         label: function() {
             return this.name||"sense now";
@@ -65,6 +69,8 @@
         },
         inputs:1,
         outputs:1,
+        inputLabels: "Ignored",
+        outputLabels: ["Monitor data"],
         icon: "sense.png",
         label: function() {
             return this.name||"sense monitor";
@@ -94,6 +100,7 @@
         },
         inputs:0,
         outputs:1,
+        outputLabels: ["Latest sense data"],
         icon: "sense.png",
         label: function() {
             return this.name||"sense update";
@@ -113,6 +120,7 @@
         },
         inputs:0,
         outputs:2,
+        outputLabels: ["Device On", "Device Off"],
         icon: "sense.png",
         label: function() {
             return this.name||(this.device ? this.device + " triggered": false )||"sense device trigger";
