@@ -31,6 +31,7 @@
         oneditprepare: function() {
             var node = this;
             $.getJSON('sense-devices',function(data) {
+                $('#node-config-input-device').html("")
                 $.each(data, function (i, device) {
                     $('#node-config-input-device').append($('<option>', { 
                         value: device.name,
@@ -127,7 +128,9 @@
         },
         oneditprepare: function() {
             var node = this;
+            console.log(this)
             $.getJSON('sense-devices',function(data) {
+                $('#node-config-input-device').html("")
                 $.each(data, function (i, device) {
                     $('#node-config-input-device').append($('<option>', { 
                         value: device.name,
