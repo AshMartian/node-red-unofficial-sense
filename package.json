@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-unofficial-sense",
-  "version": "1.0.44",
+  "version": "1.0.45",
   "description": "Unofficial Sense API implimentation for Node-Red (Home energy Monitoring)",
   "main": "sense.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "keywords": [
     "Node-Red",
+    "node-red",
     "Sense",
     "API",
     "Home",
