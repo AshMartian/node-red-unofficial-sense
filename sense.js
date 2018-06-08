@@ -105,18 +105,19 @@ module.exports = function(RED) {
                     let foundDevice = data.payload.devices.filter((device) => {
                         return device.name === this.watchingDevice || device.id === parseInt(this.watchingDevice)
                     })
+                    let tempFound = foundDevice.length == 1
 
-                    if(this.deviceOn !== (foundDevice.length == 1)) {
-                        this.deviceOn = foundDevice.length == 1;
+                    if(this.deviceOn !== tempFound) {
+                        this.deviceOn = tempFound;
                         if(this.deviceOn) {
                             node.send([{
                                 payload: foundDevice[0]
                             }, null])
                         } else {
-                            node.send(null, {payload: {"status": "Device off"}});
+                            node.send(null, {payload: {"status": "Device off", name: this.watchingDevice}});
                         }
                     } else {
-                        node.send(null, {payload: {"status": "Could not find devices"}})
+                        node.send(null, {payload: {"status": "Could not find devices", name: this.watchingDevice}})
                     }
                 });
             } else {
@@ -226,7 +227,7 @@ module.exports = function(RED) {
                         msg2 = null;
                     } else {
                         msg = null;
-                        msg2.payload = {"status": "Device off"}
+                        msg2.payload = {"status": "Device off", name: this.watchingDevice || msg.device || msg.payload}
                     }
                 } else {
                     msg2.payload = {"error": "no devices"}

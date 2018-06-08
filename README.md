@@ -39,6 +39,29 @@ The Sense update node will be triggered whenever there is new data from the Sens
 
 (Example of sense high energy usage triggering Google Home Notifier)
 
+Sense nodes can be used in conjunction with [node-red-dashboard](https://flows.nodered.org/node/node-red-dashboard) to create graphs
+
+![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/node-dashboard.png?raw=true)
+
+Simply setting msg.payload to msg.payload.w can be used with line graphs.
+
+The following function can be used to create the pi chart displaying device watts
+
+```
+var newMessage = [{
+    series: ["Watts"],
+    data: [[]],
+    labels: []
+}];
+var devices = msg.payload.devices
+for(var i = 0; i < devices.length; i++) {
+    newMessage[0].labels.push(devices[i].name);
+    newMessage[0].data[0].push(devices[i].w)
+}
+
+return {payload: newMessage};
+```
+
 #### Payload Output
 
 ```
