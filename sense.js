@@ -34,9 +34,14 @@ module.exports = function(RED) {
         })
 
         RED.httpAdmin.get("/sense-devices", (req,res) => {
-            if(node.senseDevices) {
+            if(node.senseObj) {
+                node.senseObj.getDevices().then(devices => {
+                    res.send(devices);
+                });
+            } else if(node.senseDevices) {
                 res.send(node.senseDevices);
             } else {
+                console.log(node.senseObj);
                 res.json([{name: "Error, please retry"}]) 
             }
         });
