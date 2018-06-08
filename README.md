@@ -43,9 +43,9 @@ Sense nodes can be used in conjunction with [node-red-dashboard](https://flows.n
 
 ![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/node-dashboard.png?raw=true)
 
-Simply setting msg.payload to msg.payload.w can be used with line graphs.
+Simply changing msg.payload to msg.payload.w can be used to generate line graphs.
 
-The following function can be used to create the pi chart displaying device watts
+The following function can be used to create the pi chart displaying device watts.
 
 ```
 var newMessage = [{
@@ -54,9 +54,11 @@ var newMessage = [{
     labels: []
 }];
 var devices = msg.payload.devices
-for(var i = 0; i < devices.length; i++) {
-    newMessage[0].labels.push(devices[i].name);
-    newMessage[0].data[0].push(devices[i].w)
+if(devices){
+    for(var i = 0; i < devices.length; i++) {
+        newMessage[0].labels.push(devices[i].name);
+        newMessage[0].data[0].push(devices[i].w)
+    }
 }
 
 return {payload: newMessage};
@@ -270,7 +272,7 @@ This module was developed without the consent of the Sense company, and makes us
 
 ## Tips for node-red creators
 
-If you're here wondering how to change the color of label text (Inside the html js for node regisration)
+If you're here wondering how to change the color of label text (Inside the html js for node registration)
 
 ```
 label: function() {

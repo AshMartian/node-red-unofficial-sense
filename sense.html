@@ -27,6 +27,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||(this.device ? "check " + this.device: false )||"sense device status";
         },
         oneditprepare: function() {
@@ -74,6 +75,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||"sense now";
         }
     });
@@ -91,6 +93,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||"sense monitor";
         }
     });
@@ -106,6 +109,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||"all sense devices";
         }
     });
@@ -123,6 +127,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||"sense update";
         },
         oneditprepare: function() {
@@ -144,6 +149,7 @@
         icon: "sense.png",
         label: function() {
             $("#" + this.id.replace('.', '\\.') + " > text").css("fill", "white");
+            $("#" + this.id.replace('.', '\\.') + " > rect").css("stroke", "black");
             return this.name||(this.device ? this.device + " triggered": false )||"sense device trigger";
         },
         oneditprepare: function() {
@@ -487,7 +493,7 @@
                 </dt>
                 <dd>The <code>payload.status</code> will return an error relating to if the device simply wasn't found, or if the Sense data was incorrect.</dd>
             </dl>
-            
+
             <dl class="message-properties">
                 <dt>payload.name
                     <span class="property-type">String</span>
