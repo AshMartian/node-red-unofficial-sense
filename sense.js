@@ -114,10 +114,10 @@ module.exports = function(RED) {
                                 payload: foundDevice[0]
                             }, null])
                         } else {
-                            node.send(null, {payload: {"status": "Device off", name: this.watchingDevice}});
+                            node.send([null, {payload: {"status": "Device off", name: this.watchingDevice}}]);
                         }
                     } else {
-                        node.send(null, {payload: {"status": "Could not find devices", name: this.watchingDevice}})
+                        node.send([null, {payload: {"status": "Could not find devices", name: this.watchingDevice}}])
                     }
                 });
             } else {
