@@ -30,6 +30,8 @@ module.exports = function(RED) {
             RED.httpAdmin.get("/sense-devices", function(req,res) {
                 senseObj.getDevices().then(devices => {
                     res.json(devices);
+                }).fail((msg) => {
+                   res.json([{name: "Error"}]) 
                 });
             });
         })

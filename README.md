@@ -2,7 +2,7 @@
 
  This Node-Red module connects to the Sense API used by mobile app and website to retrive data and expose 6 nodes to be used in your node-red flows.
 
-<br/>
+If you are looking for a Node module to interface with sense, take a look at the [unofficial-sense](https://github.com/blandman/unofficial-sense) module.
 
 ---
 
@@ -114,6 +114,7 @@ Node Properties include a dropdown containing all descovered devices
 
 #### Example Flows
 ![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-washer-dryer.png?raw=true)
+
 Here The washer and dryer triggers are send to a format node that takes the device.name and alerts the house with Google Home Notifier.
 ![](https://github.com/blandman/node-red-unofficial-sense/blob/master/screenshots/sense-washer-param.png?raw=true)
 

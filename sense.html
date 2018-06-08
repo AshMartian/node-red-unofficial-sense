@@ -49,8 +49,9 @@
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
-            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device")
-            this.device = $("#node-config-input-device").val();
+            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device"){
+                this.device = $("#node-config-input-device").val();
+            }
         }
     });
     RED.nodes.registerType('sense-now',{
@@ -159,8 +160,9 @@
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
-            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device")
-            this.device = $("#node-config-input-device").val();
+            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device"){
+                this.device = $("#node-config-input-device").val();
+            }
         }
     });
 </script>
@@ -188,7 +190,7 @@
         <input id="node-input-sense">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="icon-tag"></i> Device</label>
+        <label for="node-input-device"><i class="fa fa-bolt"></i> Device</label>
         <select type="text" id="node-config-input-device">
             <option>Loading Devices...</option>
         </select>
@@ -411,7 +413,7 @@
         <input id="node-input-sense">
     </div>
     <div class="form-row">
-        <label for="node-input-device"><i class="icon-tag"></i> Device</label>
+        <label for="node-input-device"><i class="fa fa-bolt"></i> Device</label>
         <!--input type="text" id="node-input-device" placeholder="Device Name or ID"-->
         <select type="text" id="node-config-input-device" >
             <option>Loading Devices...</option>
