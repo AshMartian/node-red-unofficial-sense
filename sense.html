@@ -55,7 +55,7 @@
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
-            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device"){
+            if(inputVal !== "Loading Devices..." && inputVal !== "Select a Device"){
                 this.device = $("#node-config-input-device").val();
             }
         }
@@ -172,7 +172,7 @@
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
-            if(inputVal !== "Loading Devices..." || inputVal !== "Select a Device"){
+            if(inputVal !== "Loading Devices..." && inputVal !== "Select a Device"){
                 this.device = $("#node-config-input-device").val();
             }
         }
