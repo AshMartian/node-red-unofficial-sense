@@ -26,15 +26,15 @@ module.exports = function(RED) {
             }
             getDevices()
             setInterval(getDevices, 1800000)
-
-            RED.httpAdmin.get("/sense-devices", function(req,res) {
-                senseObj.getDevices().then(devices => {
-                    res.json(devices);
-                }).fail((msg) => {
-                   res.json([{name: "Error"}]) 
-                });
-            });
         })
+
+        RED.httpAdmin.get("/sense-devices", (req,res) => {
+            if(this.senseDevices) {
+                res.send(this.senseDevices);
+            } else {
+                res.json([{name: "Error"}]) 
+            }
+        });
     }
     function SenseUpdate(config) {
         RED.nodes.createNode(this, config);
