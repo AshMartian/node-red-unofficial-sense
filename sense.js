@@ -7,6 +7,14 @@ module.exports = function(RED) {
         let creds = {email: this.credentials.email, password: this.credentials.password};
         var globalContext = this.context().global;
         this.events = new EventEmmitter();
+        var node = this;
+
+        var getDevices = () => {
+            node.senseObj.getDevices().then(devices => {
+                globalContext.set('sense-devices', devices.data);
+                node.senseDevices = devices.data;
+            })
+        }
 
         sense(creds, (data) => {
             globalContext.set('sense-realtime', data);
@@ -14,25 +22,22 @@ module.exports = function(RED) {
             if(data.type == "Authenticated") {
                 console.log(data)
             }
+            if(node.senseObj && !node.senseDevices) {
+                getDevices()
+            }
         }).then(senseObj => {
-            this.senseObj = senseObj;
+            node.senseObj = senseObj;
             this.events.emit('connected');
             
-            var getDevices = () => {
-                senseObj.getDevices().then(devices => {
-                    globalContext.set('sense-devices', devices.data);
-                    this.senseDevices = devices.data;
-                })
-            }
             getDevices()
             setInterval(getDevices, 1800000)
         })
 
         RED.httpAdmin.get("/sense-devices", (req,res) => {
-            if(this.senseDevices) {
-                res.send(this.senseDevices);
+            if(node.senseDevices) {
+                res.send(node.senseDevices);
             } else {
-                res.json([{name: "Error"}]) 
+                res.json([{name: "Error, please retry"}]) 
             }
         });
     }

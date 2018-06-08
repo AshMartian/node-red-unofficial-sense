@@ -31,21 +31,27 @@
         },
         oneditprepare: function() {
             var node = this;
-            $.getJSON('sense-devices',function(data) {
-                $('#node-config-input-device').html("")
-                $('#node-config-input-device').append($('<option>', { 
-                    value: "Select a Device",
-                    text : "Select a Device (Use Input)",
-                    selected: true
-                }));
-                $.each(data, function (i, device) {
+            var getDevices = function() {
+                $.getJSON('sense-devices',function(data) {
+                    $('#node-config-input-device').html("")
                     $('#node-config-input-device').append($('<option>', { 
-                        value: device.name,
-                        text : device.name,
-                        selected: device.name == node.device
+                        value: "Select a Device",
+                        text : "Select a Device (required)",
+                        selected: true
                     }));
+                    $.each(data, function (i, device) {
+                        $('#node-config-input-device').append($('<option>', { 
+                            value: device.name,
+                            text : device.name,
+                            selected: device.name == node.device
+                        }));
+                    });
                 });
-            });
+            }
+            getDevices();
+            $("#node-input-refresh-devices").click(function() {
+                getDevices();
+            })
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
@@ -142,21 +148,27 @@
         },
         oneditprepare: function() {
             var node = this;
-            $.getJSON('sense-devices',function(data) {
-                $('#node-config-input-device').html("")
-                $('#node-config-input-device').append($('<option>', { 
-                    value: "Select a Device",
-                    text : "Select a Device (required)",
-                    selected: true
-                }));
-                $.each(data, function (i, device) {
+            var getDevices = function() {
+                $.getJSON('sense-devices',function(data) {
+                    $('#node-config-input-device').html("")
                     $('#node-config-input-device').append($('<option>', { 
-                        value: device.name,
-                        text : device.name,
-                        selected: device.name == node.device
+                        value: "Select a Device",
+                        text : "Select a Device (required)",
+                        selected: true
                     }));
+                    $.each(data, function (i, device) {
+                        $('#node-config-input-device').append($('<option>', { 
+                            value: device.name,
+                            text : device.name,
+                            selected: device.name == node.device
+                        }));
+                    });
                 });
-            });
+            }
+            getDevices();
+            $("#node-input-refresh-devices").click(function() {
+                getDevices();
+            })
         },
         oneditsave: function() {
             var inputVal = $("#node-config-input-device").val();
@@ -194,6 +206,8 @@
         <select type="text" id="node-config-input-device">
             <option>Loading Devices...</option>
         </select>
+        <a id="node-input-refresh-devices" class="editor-button" style="position: absolute; right: 0px; top: 0px;"><i class="fa fa-refresh"></i></a>
+
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
@@ -418,6 +432,7 @@
         <select type="text" id="node-config-input-device" >
             <option>Loading Devices...</option>
         </select>
+        <a id="node-input-refresh-devices" class="editor-button" style="position: absolute; right: 0px; top: 0px;"><i class="fa fa-refresh"></i></a>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
