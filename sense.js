@@ -116,10 +116,8 @@ module.exports = function(RED) {
                         } else {
                             node.send([null, {payload: {"status": "Device off", name: this.watchingDevice}}]);
                         }
-                    }else if(this.deviceOn == null) {
+                    }else if(this.deviceOn === null) {
                         this.deviceOn = tempFound;
-                    } else {
-                        node.send([null, {payload: {"status": "Could not find devices", name: this.watchingDevice}}])
                     }
                 });
             } else {
